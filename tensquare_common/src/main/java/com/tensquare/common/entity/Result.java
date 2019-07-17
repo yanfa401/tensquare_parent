@@ -1,8 +1,6 @@
-package entity;
+package com.tensquare.common.entity;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Tolerate;
 
