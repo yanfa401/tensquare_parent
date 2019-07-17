@@ -1,4 +1,4 @@
-package com.tensquare.base.config;
+package com.tensquare.common.config;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;

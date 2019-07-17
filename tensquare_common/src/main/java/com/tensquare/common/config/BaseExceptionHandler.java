@@ -1,4 +1,4 @@
-package com.tensquare.base.config;
+package com.tensquare.common.config;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tensquare.common.entity.Result;
 import com.tensquare.common.entity.StatusCode;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
