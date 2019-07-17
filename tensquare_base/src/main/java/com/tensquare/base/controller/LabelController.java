@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
 
-import entity.PageResult;
-import entity.Result;
-import entity.StatusCode;
+import com.tensquare.common.entity.PageResult;
+import com.tensquare.common.entity.Result;
+import com.tensquare.common.entity.StatusCode;
 
 /**
  * 描述：标签控制层

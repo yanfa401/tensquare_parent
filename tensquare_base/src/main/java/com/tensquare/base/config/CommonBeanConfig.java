@@ -3,7 +3,8 @@ package com.tensquare.base.config;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import util.IdWorker;
+import com.tensquare.common.util.IdWorker;
+
 
 /**
  * 描述：通用一些 bean配置

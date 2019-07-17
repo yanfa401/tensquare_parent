@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 import com.tensquare.base.dao.LabelDao;
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
+import com.tensquare.common.util.IdWorker;
 
 import lombok.NonNull;
-import util.IdWorker;
 
 /**
  * 描述：标签Service实现
