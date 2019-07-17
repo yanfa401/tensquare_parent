@@ -1,13 +1,12 @@
 package com.tensquare.base.pojo;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 /**
@@ -21,7 +20,9 @@ import lombok.experimental.Tolerate;
 @Table(name = "tb_label")
 @Data
 @Builder
-public class Label {
+public class Label implements Serializable {
+    
+    private static final long serialVersionUID = -3418022436712795069L;
     
     @Tolerate
     public Label() {}
