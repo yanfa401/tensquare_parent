@@ -1,8 +1,10 @@
 package com.tensquare.base.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
 
+import entity.PageResult;
 import entity.Result;
 import entity.StatusCode;
 
@@ -90,5 +93,21 @@ public class LabelController {
         labelService.update(label);
         return new Result<>(true, StatusCode.OK.getCode(), "修改成功", null);
     }
-
+    
+    /**
+     * 条件查询
+     * @param searchMap  查询条件
+     * @param currentPage  当前页码
+     * @param pageSize  每页展示数量
+     * @return
+     */
+    @PostMapping("/search/{page}/{size}")
+    public Result search(@RequestBody Map searchMap, @PathVariable("page") int currentPage, @PathVariable("size") int pageSize) {
+        Page<Label> labelList = labelService.findSearch(searchMap, currentPage, pageSize);
+        PageResult<Label> pageResult = new PageResult<>(labelList.getTotalElements(), labelList.getContent());
+        return new Result<>(true, StatusCode.OK.getCode(), "查询成功", pageResult);
+    }
+    
+    
+    
 }
