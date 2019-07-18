@@ -121,6 +121,16 @@ public class EnterpriseServiceImpl implements EnterpriseService {
         return enterpriseDao.findAll(specification);
     }
     
+    /**
+     * 获取热门企业列表
+     *
+     * @return
+     */
+    @Override
+    public List<Enterprise> hotlist() {
+        return enterpriseDao.findByIshot("1");
+    }
+    
     
     /**
      * 动态创建 where条件

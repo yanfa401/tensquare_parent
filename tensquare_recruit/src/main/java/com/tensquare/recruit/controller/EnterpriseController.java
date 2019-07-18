@@ -120,4 +120,9 @@ public class EnterpriseController {
     }
     
     
+    @GetMapping("/search/hotlist")
+    public Result hotlist() {
+        List<Enterprise> enterpriseList = enterpriseService.hotlist();
+        return new Result(true,StatusCode.OK.getCode(),HttpReturnMessage.SUCCESS, enterpriseList);
+    }
 }

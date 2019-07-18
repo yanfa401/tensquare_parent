@@ -62,4 +62,11 @@ public interface EnterpriseService {
      */
     List<Enterprise> findSearch(Map whereMap);
     
+    
+    /**
+     * 获取热门企业列表
+     * @return
+     */
+    List<Enterprise> hotlist();
+    
 }

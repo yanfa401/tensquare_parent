@@ -114,6 +114,29 @@ public class RecruitServiceImpl implements RecruitService {
     }
     
     /**
+     * 查询最新4条职位列表,并按创建时间排序
+     *
+     * @param state
+     * @return
+     */
+    @Override
+    public List<Recruit> findTop4ByStateOrderByCreatetimeDesc(String state) {
+        return recruitDao.findTop4ByStateOrderByCreatetimeDesc(state);
+    }
+    
+    /**
+     * 最新职位列表:
+     * 查询状态不为0并以创建日期降序排序，查询前12条记录
+     *
+     * @param state
+     * @return
+     */
+    @Override
+    public List<Recruit> findTop12ByStateNotOrderByCreatetimeDesc(String state) {
+        return recruitDao.findTop12ByStateNotOrderByCreatetimeDesc(state);
+    }
+    
+    /**
      * 动态条件构建
      * @param searchMap
      * @return

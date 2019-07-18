@@ -62,4 +62,19 @@ public interface RecruitService {
      */
     Page<Recruit> searchMap(Map whereMap, int pageIndex, int pageSize);
     
+    /**
+     * 查询最新4条职位列表,并按创建时间排序
+     * @param state
+     * @return
+     */
+    List<Recruit> findTop4ByStateOrderByCreatetimeDesc(String state);
+    
+    /**
+     * 最新职位列表:
+     * 查询状态不为0并以创建日期降序排序，查询前12条记录
+     * @param state
+     * @return
+     */
+    List<Recruit> findTop12ByStateNotOrderByCreatetimeDesc(String state);
+    
 }

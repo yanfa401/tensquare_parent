@@ -115,8 +115,28 @@ public class RecruitController {
      * @return
      */
     @PostMapping(value="/search")
-    public Result findSearch( @RequestBody Map searchMap){
+    public Result findSearch(@RequestBody Map searchMap){
         List<Recruit> resultList = recruitService.searchMap(searchMap);
+        return new Result(true,StatusCode.OK.getCode(),HttpReturnMessage.SUCCESS, resultList);
+    }
+    
+    /**
+     * 获取推荐的职位列表
+     * @return
+     */
+    @GetMapping("/search/recommend")
+    public Result recommend() {
+        List<Recruit> resultList = recruitService.findTop4ByStateOrderByCreatetimeDesc("2");
+        return new Result(true,StatusCode.OK.getCode(),HttpReturnMessage.SUCCESS, resultList);
+    }
+    
+    /**
+     * 查询12条最新职位
+     * @return
+     */
+    @GetMapping("/search/newlist")
+    public Result newlist() {
+        List<Recruit> resultList = recruitService.findTop12ByStateNotOrderByCreatetimeDesc("0");
         return new Result(true,StatusCode.OK.getCode(),HttpReturnMessage.SUCCESS, resultList);
     }
 }
