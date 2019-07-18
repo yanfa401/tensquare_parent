@@ -1,13 +1,22 @@
 package com.tensquare.recruit.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.tensquare.common.util.IdWorker;
 import com.tensquare.recruit.dao.EnterpriseDao;
 import com.tensquare.recruit.pojo.Enterprise;
 import com.tensquare.recruit.service.EnterpriseService;
@@ -24,6 +33,9 @@ public class EnterpriseServiceImpl implements EnterpriseService {
     
     @Autowired
     private EnterpriseDao enterpriseDao;
+    
+    @Autowired
+    private IdWorker idWorker;
     
     /**
      * 查询全部
@@ -57,6 +69,7 @@ public class EnterpriseServiceImpl implements EnterpriseService {
      */
     @Override
     public void add(Enterprise enterprise) {
+        enterprise.setId(String.valueOf(idWorker.nextId()));
         enterpriseDao.save(enterprise);
     }
     
@@ -90,7 +103,10 @@ public class EnterpriseServiceImpl implements EnterpriseService {
      */
     @Override
     public Page<Enterprise> findSearch(Map whereMap, int page, int pageSize) {
-        return null;
+        Specification<Enterprise> specification = createSpecification(whereMap);
+        PageRequest pageRequest = PageRequest.of(page-1, pageSize);
+        Page<Enterprise> pages = enterpriseDao.findAll(specification, pageRequest);
+        return pages;
     }
     
     /**
@@ -101,6 +117,60 @@ public class EnterpriseServiceImpl implements EnterpriseService {
      */
     @Override
     public List<Enterprise> findSearch(Map whereMap) {
-        return null;
+        Specification<Enterprise> specification = createSpecification(whereMap);
+        return enterpriseDao.findAll(specification);
+    }
+    
+    
+    /**
+     * 动态创建 where条件
+     * @param whereMap
+     * @return
+     */
+    private Specification<Enterprise> createSpecification(Map whereMap){
+        Specification<Enterprise> specification = new Specification<Enterprise>() {
+            @Override
+            public Predicate toPredicate(Root<Enterprise> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                List<Predicate> predicateList = new ArrayList<>();
+                //ID
+                if (!StringUtils.isEmpty((String)whereMap.get("id"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("id").as(String.class), "%"+(String)whereMap.get("id")+"%"));
+                }
+                //企业名称
+                if (!StringUtils.isEmpty((String)whereMap.get("name"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("name").as(String.class), "%"+(String)whereMap.get("name")+"%"));
+                }
+                //企业简介
+                if (!StringUtils.isEmpty((String)whereMap.get("summary"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("summary").as(String.class), "%"+(String)whereMap.get("summary")+"%"));
+                }
+                //企业地址
+                if (!StringUtils.isEmpty((String)whereMap.get("address"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("address").as(String.class), "%"+(String)whereMap.get("address")+"%"));
+                }
+                //标签列表
+                if (!StringUtils.isEmpty((String)whereMap.get("labels"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("labels").as(String.class), "%"+(String)whereMap.get("labels")+"%"));
+                }
+                //是否热门
+                if (!StringUtils.isEmpty((String)whereMap.get("ishot"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("ishot").as(String.class), "%"+(String)whereMap.get("ishot")+"%"));
+                }
+                //坐标
+                if (!StringUtils.isEmpty((String)whereMap.get("coordinate"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("coordinate").as(String.class), "%"+(String)whereMap.get("coordinate")+"%"));
+                }
+                //LOGO
+                if (!StringUtils.isEmpty((String)whereMap.get("logo"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("logo").as(String.class), "%"+(String)whereMap.get("logo")+"%"));
+                }
+                //URL
+                if (!StringUtils.isEmpty((String)whereMap.get("url"))) {
+                    predicateList.add(criteriaBuilder.like(root.get("url").as(String.class), "%"+(String)whereMap.get("url")+"%"));
+                }
+                return criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()]));
+            }
+        };
+        return specification;
     }
 }

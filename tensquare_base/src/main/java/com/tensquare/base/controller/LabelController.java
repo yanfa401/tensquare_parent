@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
-
+import com.tensquare.common.entity.HttpReturnMessage;
 import com.tensquare.common.entity.PageResult;
 import com.tensquare.common.entity.Result;
 import com.tensquare.common.entity.StatusCode;
@@ -41,7 +41,7 @@ public class LabelController {
     @GetMapping("/findAll")
     public Result<List> findAll() {
         List<Label> labelList = labelService.findAll();
-        Result<List> result = new Result<>(true, StatusCode.OK.getCode(), "查询成功", labelList);
+        Result<List> result = new Result<>(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, labelList);
         //Result result = Result.builder().flag(true).code(20000).message("查询成功").data(labelList).build();
         return result;
     }
@@ -55,7 +55,7 @@ public class LabelController {
     @GetMapping("/{id}")
     public Result<Label> findById(@PathVariable("id") String id) {
         Label label = labelService.findById(id);
-        return new Result<>(true, StatusCode.OK.getCode(), "查询成功", label);
+        return new Result<>(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, label);
     }
     
     
@@ -67,7 +67,7 @@ public class LabelController {
     @PostMapping
     public Result add(@RequestBody Label label) {
         labelService.add(label);
-        return new Result<>(true, StatusCode.OK.getCode(), "新增成功", null);
+        return new Result<>(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
     
     
@@ -79,7 +79,7 @@ public class LabelController {
     @DeleteMapping("/{id}")
     public Result deleteById(@PathVariable("id") String id) {
         labelService.deleteById(id);
-        return new Result<>(true, StatusCode.OK.getCode(), "删除成功", null);
+        return new Result<>(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
     
     
@@ -91,7 +91,7 @@ public class LabelController {
     @PutMapping
     public Result update(@RequestBody Label label) {
         labelService.update(label);
-        return new Result<>(true, StatusCode.OK.getCode(), "修改成功", null);
+        return new Result<>(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
     
     /**
@@ -105,7 +105,7 @@ public class LabelController {
     public Result search(@RequestBody Map searchMap, @PathVariable("page") int currentPage, @PathVariable("size") int pageSize) {
         Page<Label> labelList = labelService.findSearch(searchMap, currentPage, pageSize);
         PageResult<Label> pageResult = new PageResult<>(labelList.getTotalElements(), labelList.getContent());
-        return new Result<>(true, StatusCode.OK.getCode(), "查询成功", pageResult);
+        return new Result<>(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, pageResult);
     }
     
     
