@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
  */
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.tensquare"})
 public class BaseApplication {
     
     public static void main(String[] args) {
