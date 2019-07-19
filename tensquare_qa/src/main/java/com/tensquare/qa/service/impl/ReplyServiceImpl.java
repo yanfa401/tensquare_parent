@@ -50,7 +50,7 @@ public class ReplyServiceImpl implements ReplyService {
 	 * @param size
 	 * @return
 	 */
-	public Page<Reply> findSearch(Map whereMap, int page, int size) {
+	public Page<Reply> searchMap(Map whereMap, int page, int size) {
 		Specification<Reply> specification = createSpecification(whereMap);
 		PageRequest pageRequest =  PageRequest.of(page-1, size);
 		return replyDao.findAll(specification, pageRequest);
@@ -62,7 +62,7 @@ public class ReplyServiceImpl implements ReplyService {
 	 * @param whereMap
 	 * @return
 	 */
-	public List<Reply> findSearch(Map whereMap) {
+	public List<Reply> searchMap(Map whereMap) {
 		Specification<Reply> specification = createSpecification(whereMap);
 		return replyDao.findAll(specification);
 	}
