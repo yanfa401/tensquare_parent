@@ -3,6 +3,7 @@ package com.tensquare.article.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,11 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.tensquare.article.dao.ArticleDao;
 import com.tensquare.article.pojo.Article;
 import com.tensquare.article.service.ArticleService;
+import com.tensquare.common.redis.CommonKey;
 import com.tensquare.common.util.IdWorker;
 
 /**
@@ -35,6 +40,9 @@ public class ArticleServiceImpl implements ArticleService {
     
     @Autowired
     private IdWorker idWorker;
+    
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     
     /**
      * 查询全部
@@ -54,7 +62,17 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public Article findById(String id) {
-        return articleDao.findById(id).get();
+        //从缓存中提取
+        String key = CommonKey.KEY_ARTICLE_ID + id;
+        String articleStr = redisTemplate.opsForValue().get(key);
+        Article article = JSONObject.parseObject(articleStr, Article.class);
+        if (article == null) {
+            //缓存没有从库里查,并写入缓存
+            article = articleDao.findById(id).get();
+            //设置5分钟失效时间
+            redisTemplate.opsForValue().set(key, JSONObject.toJSONString(article), 5, TimeUnit.MINUTES);
+        }
+        return article;
     }
     
     /**
@@ -76,6 +94,8 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public void deleteById(String id) {
+        String key = CommonKey.KEY_ARTICLE_ID + id;
+        redisTemplate.delete(key);
         articleDao.deleteById(id);
     }
     
@@ -86,6 +106,8 @@ public class ArticleServiceImpl implements ArticleService {
      */
     @Override
     public void update(Article article) {
+        String key = CommonKey.KEY_ARTICLE_ID + article.getId();
+        redisTemplate.delete(key);
         articleDao.save(article);
     }
     

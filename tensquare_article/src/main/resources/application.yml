@@ -12,3 +12,6 @@ spring:
     database: mysql
     show-sql: true
     generate-ddl: true
+  redis:
+    host: 192.168.158.132
+    port: 6379
