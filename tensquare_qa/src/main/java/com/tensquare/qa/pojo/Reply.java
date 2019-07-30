@@ -5,7 +5,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
+import lombok.experimental.Tolerate;
 
 /**
  * reply实体类
@@ -15,7 +18,16 @@ import lombok.Data;
 @Entity
 @Table(name="tb_reply")
 @Data
+@ToString
+@Builder
 public class Reply implements Serializable{
+    
+    private static final long serialVersionUID = 6420840895506123703L;
+    
+    @Tolerate
+    public Reply() {
+        super();
+    }
 
     @Id
     private String id;//编号

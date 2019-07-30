@@ -2,7 +2,7 @@ server:
   port: 9003
 spring:
   application:
-    name: tensquare_recruit
+    name: tensquare_qa
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:60298/tensquare_qa?characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useUnicode=true&verifyServerCertificate=false&useSSL=false

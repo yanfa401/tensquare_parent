@@ -5,8 +5,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Tolerate;
 
 /**
  * problem实体类
@@ -17,7 +19,13 @@ import lombok.ToString;
 @Table(name="tb_problem")
 @Data
 @ToString
+@Builder
 public class Problem implements Serializable{
+    
+    @Tolerate
+    public Problem() {
+        super();
+    }
 
     @Id
     private String id;//ID
