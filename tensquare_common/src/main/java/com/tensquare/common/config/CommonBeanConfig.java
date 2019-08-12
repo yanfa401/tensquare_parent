@@ -1,5 +1,6 @@
 package com.tensquare.common.config;
 
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -12,7 +13,7 @@ import com.tensquare.common.util.IdWorker;
  * @author xielei
  * @date 2019/07/17
  */
-@SpringBootApplication
+@SpringBootConfiguration
 public class CommonBeanConfig {
     
     /**
