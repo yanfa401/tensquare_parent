@@ -14,4 +14,5 @@ spring:
     generate-ddl: true
   redis:
     host: 192.168.158.132
+    port: 6379
 

@@ -9,6 +9,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -47,11 +49,12 @@ public class GatheringServiceImpl implements GatheringService {
     
     /**
      * 根据id查
-     *
+     * @Cacheable: 这样当此方法第一次运行，在缓存中没有找到对应的value和key,则将查询结果放入缓存
      * @param id
      * @return
      */
     @Override
+    @Cacheable(value = "gathering", key = "#id")
     public Gathering findById(String id) {
         return gatheringDao.findById(id).get();
     }
@@ -73,6 +76,7 @@ public class GatheringServiceImpl implements GatheringService {
      * @param id
      */
     @Override
+    @CacheEvict(value = "gathering", key = "#id")
     public void deleteById(String id) {
         gatheringDao.deleteById(id);
     }
@@ -83,6 +87,7 @@ public class GatheringServiceImpl implements GatheringService {
      * @param gathering
      */
     @Override
+    @CacheEvict(value = "gathering", key = "#gathering.id")
     public void update(Gathering gathering) {
         gatheringDao.save(gathering);
     }
