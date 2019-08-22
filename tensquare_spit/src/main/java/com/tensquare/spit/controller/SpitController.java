@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,9 @@ public class SpitController {
     
     @Autowired
     private SpitService spitService;
+    
+    @Autowired
+    private StringRedisTemplate redisTemplate;
     
     @GetMapping
     public Result findAll() {
@@ -82,12 +86,19 @@ public class SpitController {
     /**
      * 点赞
      *
-     * @param id
+     * @param id 这条评论的id
      * @return
      */
     @PutMapping("/thumbup/{id}")
     public Result updateThumbup(@PathVariable("id") String id) {
+        //点赞前先从redis检查当前key是否存在,如果存在表示点赞过了,不允许点赞了
+        String key = "spitdb:spit:thumbup:id:" + id;
+        if (redisTemplate.hasKey(key)) {
+            return new Result(false, StatusCode.ERROR.getCode(), HttpReturnMessage.FAIL, null);
+        }
         spitService.updateThumbup(id);
+        redisTemplate.opsForValue().set(key, "1");
         return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
+    
 }
