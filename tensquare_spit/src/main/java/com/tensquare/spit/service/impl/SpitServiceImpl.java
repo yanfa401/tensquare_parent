@@ -3,6 +3,13 @@ package com.tensquare.spit.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.tensquare.common.util.IdWorker;
@@ -24,6 +31,9 @@ public class SpitServiceImpl implements SpitService {
     
     @Autowired
     private IdWorker idWorker;
+    
+    @Autowired
+    private MongoTemplate mongoTemplate;
     
     /**
      * 查询全部记录
@@ -75,5 +85,34 @@ public class SpitServiceImpl implements SpitService {
     @Override
     public void deleteById(String id) {
         spitRepository.deleteById(id);
+    }
+    
+    /**
+     * 根据上级ID查询吐槽列表（分页）
+     *
+     * @param parentId
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public Page<Spit> findByParentid(String parentId, int pageIndex, int pageSize) {
+        Pageable pageable = PageRequest.of(pageIndex - 1, pageSize);
+        return spitRepository.findByParentid(parentId, pageable);
+    }
+    
+    /**
+     * 点赞
+     * 使用 mongoTemplate直接对collection中的数据进行加一操作
+     *
+     * @param id
+     */
+    @Override
+    public void updateThumbup(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+        Update update = new Update();
+        update.inc("thumbup", 1);
+        mongoTemplate.updateFirst(query, update, "spit");
     }
 }

@@ -3,6 +3,7 @@ package com.tensquare.spit.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,33 @@ public class SpitController {
     public Result update(@RequestBody Spit spit, @PathVariable String id) {
         spit.set_id(id);
         spitService.update(spit);
+        return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
+    }
+    
+    /**
+     * 根据上级id查询吐槽分页数据
+     *
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/comment/{parentId}/{pageIndex}/{pageSize}")
+    public Result findByParentid(@PathVariable("parentId") String parentId,
+                                 @PathVariable("pageIndex") int pageIndex,
+                                 @PathVariable("pageSize") int pageSize) {
+        Page<Spit> spitPage = spitService.findByParentid(parentId, pageIndex, pageSize);
+        return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, spitPage.getContent());
+    }
+    
+    /**
+     * 点赞
+     *
+     * @param id
+     * @return
+     */
+    @PutMapping("/thumbup/{id}")
+    public Result updateThumbup(@PathVariable("id") String id) {
+        spitService.updateThumbup(id);
         return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
 }

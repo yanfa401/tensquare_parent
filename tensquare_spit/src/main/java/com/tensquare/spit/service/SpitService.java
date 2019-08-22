@@ -2,6 +2,9 @@ package com.tensquare.spit.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.tensquare.spit.pojo.Spit;
 
 /**
@@ -48,4 +51,21 @@ public interface SpitService {
      * @param id
      */
     void deleteById(String id);
+    
+    /**
+     * 根据上级ID查询吐槽列表（分页）
+     *
+     * @param parentId
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    Page<Spit> findByParentid(String parentId, int pageIndex, int pageSize);
+    
+    /**
+     * 点赞
+     *
+     * @param id
+     */
+    void updateThumbup(String id);
 }
