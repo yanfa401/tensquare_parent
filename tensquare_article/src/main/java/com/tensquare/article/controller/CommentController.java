@@ -3,6 +3,7 @@ package com.tensquare.article.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,5 +53,17 @@ public class CommentController {
     public Result findByArticleid(@PathVariable String articleid) {
         List<Comment> commentList = commentService.findByArticleid(articleid);
         return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, commentList);
+    }
+    
+    /**
+     * 根据ID删除评论
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping(value = "/{id}")
+    public Result deleteById(@PathVariable("id") String id) {
+        commentService.deleteBy_id(id);
+        return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
 }
