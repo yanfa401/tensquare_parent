@@ -74,5 +74,17 @@ public interface SpitService {
      */
     void publishSpit(Spit spit);
     
+    /**
+     * 新增浏览量
+     *
+     * @param id
+     */
+    void updateVisits(String id);
     
+    /**
+     * 新增分享数
+     *
+     * @param id
+     */
+    void updateShare(String id);
 }

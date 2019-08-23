@@ -112,4 +112,27 @@ public class SpitController {
         return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
     
+    /**
+     * 新增阅读数
+     *
+     * @return
+     */
+    @PutMapping("/updateVisits/{id}")
+    public Result updateVisits(@PathVariable("id") String id) {
+        spitService.updateVisits(id);
+        return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
+    }
+    
+    /**
+     * 新增分享数
+     *
+     * @return
+     */
+    @PutMapping("/updateShare/{id}")
+    public Result updateShare(@PathVariable("id") String id) {
+        spitService.updateShare(id);
+        return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
+    }
+    
+    
 }

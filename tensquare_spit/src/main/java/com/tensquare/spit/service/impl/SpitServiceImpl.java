@@ -142,4 +142,32 @@ public class SpitServiceImpl implements SpitService {
         //保存
         spitRepository.save(spit);
     }
+    
+    /**
+     * 新增浏览量
+     *
+     * @param id
+     */
+    @Override
+    public void updateVisits(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+        Update update = new Update();
+        update.inc("visits", 1);
+        mongoTemplate.updateFirst(query, update, Spit.class);
+    }
+    
+    /**
+     * 新增分享数
+     *
+     * @param id
+     */
+    @Override
+    public void updateShare(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+        Update update = new Update();
+        update.inc("share", 1);
+        mongoTemplate.updateFirst(query, update, Spit.class);
+    }
 }
