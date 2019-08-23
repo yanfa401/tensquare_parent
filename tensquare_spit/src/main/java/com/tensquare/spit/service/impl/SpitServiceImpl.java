@@ -1,5 +1,6 @@
 package com.tensquare.spit.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.tensquare.common.util.IdWorker;
 import com.tensquare.spit.dao.SpitRepository;
@@ -114,5 +116,30 @@ public class SpitServiceImpl implements SpitService {
         Update update = new Update();
         update.inc("thumbup", 1);
         mongoTemplate.updateFirst(query, update, "spit");
+    }
+    
+    /**
+     * 新增评论
+     */
+    @Override
+    public void publishSpit(Spit spit) {
+        spit.set_id(String.valueOf(idWorker.nextId()));
+        spit.setPublishtime(new Date());//发布日期
+        spit.setVisits(0);//浏览量
+        spit.setThumbup(0);//分享数
+        spit.setShare(0);//点赞数
+        spit.setComment(0);//回复数
+        spit.setState("1");//状态
+        
+        //如果是回复别人的评论,那么父评论要回复数+1
+        if (!StringUtils.isEmpty(spit.getParentid())) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("_id").is(spit.getParentid()));
+            Update update = new Update();
+            update.inc("comment", 1);
+            mongoTemplate.updateFirst(query, update, "spit");
+        }
+        //保存
+        spitRepository.save(spit);
     }
 }

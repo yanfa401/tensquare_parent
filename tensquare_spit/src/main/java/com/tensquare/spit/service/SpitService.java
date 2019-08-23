@@ -53,7 +53,7 @@ public interface SpitService {
     void deleteById(String id);
     
     /**
-     * 根据上级ID查询吐槽列表（分页）
+     * 根据上级ID查询评论列表（分页）
      *
      * @param parentId
      * @param pageIndex
@@ -68,4 +68,9 @@ public interface SpitService {
      * @param id
      */
     void updateThumbup(String id);
+    
+    /**
+     * 新增评论
+     */
+    void publishSpit(Spit spit);
 }
