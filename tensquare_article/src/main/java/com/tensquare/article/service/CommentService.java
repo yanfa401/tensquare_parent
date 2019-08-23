@@ -26,4 +26,11 @@ public interface CommentService {
      * @return
      */
     List<Comment> findByArticleid(String id);
+    
+    /**
+     * 根据id删除
+     *
+     * @param id
+     */
+    void deleteBy_id(String id);
 }

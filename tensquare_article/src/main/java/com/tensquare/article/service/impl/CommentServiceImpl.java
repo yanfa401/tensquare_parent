@@ -47,4 +47,14 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> findByArticleid(String id) {
         return commentRepository.findByArticleid(id);
     }
+    
+    /**
+     * 根据id删除
+     *
+     * @param id
+     */
+    @Override
+    public void deleteBy_id(String id) {
+        commentRepository.deleteBy_id(id);
+    }
 }
