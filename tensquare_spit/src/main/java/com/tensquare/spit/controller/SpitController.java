@@ -101,4 +101,15 @@ public class SpitController {
         return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
     }
     
+    /**
+     * 新增评论
+     *
+     * @return
+     */
+    @PostMapping("/publishSpit")
+    public Result publishSpit(@RequestBody Spit spit) {
+        spitService.publishSpit(spit);
+        return new Result(true, StatusCode.OK.getCode(), HttpReturnMessage.SUCCESS, null);
+    }
+    
 }
