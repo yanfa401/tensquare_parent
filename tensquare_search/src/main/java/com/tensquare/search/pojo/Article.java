@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import lombok.Data;
 import lombok.ToString;
@@ -17,7 +18,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-@Document(indexName = "tensquare", type = "article")
+@Document(indexName = "articleindex", type = "article")
 public class Article implements Serializable {
     
     @Id
