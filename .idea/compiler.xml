@@ -15,6 +15,7 @@
         <module name="tensquare_recruit" />
         <module name="tensquare_search" />
         <module name="tensquare_spit" />
+        <module name="tensquare_user" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -32,6 +33,7 @@
       <module name="tensquare_recruit" options="-parameters" />
       <module name="tensquare_search" options="-parameters" />
       <module name="tensquare_spit" options="-parameters" />
+      <module name="tensquare_user" options="-parameters" />
       <module name="tensquarecommon" options="-parameters" />
     </option>
   </component>
